@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup, Comment
+from datetime import datetime, timedelta
 from PyInquirer import prompt, Separator
 
 from bibbot.api.request import get_soup
@@ -29,8 +30,11 @@ def choose_times(location):
 
 
 def get_times_1(location):
+    # get date for complete seating chart
+    now = datetime.now() + timedelta(days=1)
+    now = 1 if now.weekday() != 6 else 2
     # remove comments from html
-    soup = get_soup(location['location']['url'], location['date'])
+    soup = get_soup(location['location']['url'], now)
     for element in soup(text=lambda text: isinstance(text, Comment)):
         element.extract()
     # splice seat table out
