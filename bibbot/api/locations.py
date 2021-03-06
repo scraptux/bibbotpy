@@ -1,19 +1,7 @@
-import urllib.request
-import urllib.parse
-
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
 from PyInquirer import prompt, Separator
-
-"""url = "url"
-values = {}
-
-data = urllib.parse.urlencode(values)
-data = data.encode('utf-8')
-req = urllib.request.Request(url, data)
-resp = urllib.request.urlopen(req)
-respData = resp.read()"""
 
 
 def choose_location():

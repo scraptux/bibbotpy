@@ -1,11 +1,10 @@
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
-
 # noinspection PyUnresolvedReferences
 from dateutil import rrule
 from datetime import datetime, timedelta
 
 from PyInquirer import prompt, Separator
+
+from bibbot.api.request import get_soup
 
 
 def choose_days(location):
@@ -17,8 +16,8 @@ def choose_days(location):
             continue
         day_options.append(dt.strftime("%A, %d. %B %Y"))
         if dt.weekday() == day_limit and dt != now+timedelta(days=13):
-            str = f"{dt.strftime('%W')}. Kalenderwoche"
-            day_options.append(Separator(f'===== {str:^20} ====='))
+            s = f"{dt.strftime('%W')}. Kalenderwoche"
+            day_options.append(Separator(f'===== {s:^20} ====='))
 
     question = [{
         'type': 'list',
@@ -40,10 +39,3 @@ def get_day_limits(location):
     day_lim = day_lim[idx:].split(" ")[2]
     day_lim = day_lim[:-1] if day_lim[-1] == ")" else day_lim
     return 6 if day_lim in ["Sonntag", "So."] else 5
-
-
-def get_soup(url, day=0):
-    url = f"{url}/index.php?day={day}"
-    page = urlopen(url)
-    html = page.read().decode("utf-8")
-    return BeautifulSoup(html, "html.parser")
