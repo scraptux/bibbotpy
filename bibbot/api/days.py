@@ -7,8 +7,8 @@ from PyInquirer import prompt, Separator
 from bibbot.api.request import get_soup
 
 
-def choose_days(location):
-    day_limit = get_day_limits(location)
+def choose_days(t):
+    day_limit = get_day_limits(t['location']['url'])
     now = datetime.strptime(datetime.now().strftime('%Y-%m-%d'), '%Y-%m-%d')
     day_options = []
     for dt in rrule.rrule(rrule.DAILY, dtstart=now, until=now+timedelta(days=13)):
@@ -26,12 +26,11 @@ def choose_days(location):
         'choices': day_options
     }]
     answer = datetime.strptime(prompt(question)['date'], '%A, %d. %B %Y')
-    location['date'] = (answer - now).days
-    return location
+    t['date'] = (answer - now).days
 
 
-def get_day_limits(location):
-    soup = get_soup(location['location']['url'])
+def get_day_limits(url):
+    soup = get_soup(url)
     day_lim = soup.select("#layouttabelle tbody tr td table tr td p")[1].get_text()
     idx = day_lim.find("Montag")
     if idx == -1:

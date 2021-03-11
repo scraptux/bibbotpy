@@ -8,8 +8,8 @@ from bibbot.api.request import get_soup
 # 1: BRuW, BSP, BNat, MedHB
 
 
-def choose_times(location):
-    time_options = get_times_1(location)
+def choose_times(t):
+    time_options = get_times_1(t['location']['url'])
     question = [{
         'type': 'checkbox',
         'name': 'time',
@@ -17,24 +17,22 @@ def choose_times(location):
         'choices': time_options
     }]
     answers = prompt(question)['time']
-    if not 'time' in location:
-        location['time'] = {}
+    if 'time' not in t:
+        t['time'] = {}
     for answer in answers:
         # location['time'][answer[-12:-1]]
         time_str = answer[-12:-1]
-        if time_str not in location['time']:
-            location['time'][time_str] = []
-        location['time'][time_str].append(answer[:-14])
-
-    return location
+        if time_str not in t['time']:
+            t['time'][time_str] = []
+        t['time'][time_str].append(answer[:-14])
 
 
-def get_times_1(location):
+def get_times_1(url):
     # get date for complete seating chart
     now = datetime.now() + timedelta(days=1)
     now = 1 if now.weekday() != 6 else 2
     # remove comments from html
-    soup = get_soup(location['location']['url'], now)
+    soup = get_soup(url, now)
     for element in soup(text=lambda text: isinstance(text, Comment)):
         element.extract()
     # splice seat table out

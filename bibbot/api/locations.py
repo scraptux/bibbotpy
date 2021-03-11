@@ -4,7 +4,7 @@ from urllib.request import urlopen
 from PyInquirer import prompt, Separator
 
 
-def choose_location():
+def choose_location(t):
     # get list of shit
     prompt_options, location_urls = get_available_locations()
     # display shit prompt
@@ -16,7 +16,8 @@ def choose_location():
     }]
     answer = prompt(question)
     # return selected shit
-    return {'location': location_urls[answer['location']]}
+    t['location'] = location_urls[answer['location']]
+    # return {'location': location_urls[answer['location']]}
 
 
 def get_available_locations():
