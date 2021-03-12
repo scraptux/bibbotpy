@@ -10,7 +10,7 @@ from bibbot.cli import user, pswd
 def book_ticket(ticket):
     auth.login(ticket, user, pswd)
     # TODO
-    auth.logout()
+    auth.logout(ticket)
 
 
 def get_ticket():

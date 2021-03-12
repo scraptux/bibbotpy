@@ -33,5 +33,6 @@ def login(t, user, pswd):
     t['location']['url'] = response.url
 
 
-def logout():
-    pass  # TODO
+def logout(t):
+    url = t['location']['url'] + "/index.php?logout="
+    response = opener.open(url)
