@@ -4,10 +4,8 @@ import bibbot.api.times as times
 
 import bibbot.api.auth as auth
 
-from bibbot.cli import user, pswd
 
-
-def book_ticket(ticket):
+def book_ticket(ticket, user, pswd):
     auth.login(ticket, user, pswd)
     # TODO
     auth.logout(ticket)
